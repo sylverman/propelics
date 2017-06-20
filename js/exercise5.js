@@ -1,76 +1,88 @@
-operation = "512+43-9+1+100";
-document.getElementById('operationExercise5').innerHTML = operation;
+operation = "512/2+43-9+1*2+100*2";
+document.getElementById('operationExercise5').value = operation;
+operationExercise5 = document.getElementById('operationExercise5');
 
-var operators = operation.split("").reduce((total, current) => {
-  if(!isNaN(current)){
-    var previous = total.pop();
-    if (previous){
-      if (!isNaN(previous)) {
-        total.push(previous.toString().concat(current.toString()));
+var calc = function(operation) {
+  var operators = operation.split("").reduce((total, current) => {
+    if(!isNaN(current)){
+      var previous = total.pop();
+      if (previous){
+        if (!isNaN(previous)) {
+          total.push(previous.toString().concat(current.toString()));
+        } else {
+          total.push(previous);
+          total.push(current);
+        }
       } else {
-        total.push(previous);
         total.push(current);
       }
     } else {
       total.push(current);
     }
-  } else {
-    total.push(current);
-  }
 
-  return total;
-}, []);
-function simplifying(array){
-  /*
-  array.forEach(function(current, index, array){
-    if(array.indexOf('+') != -1){
-      plusPosition = array.indexOf('+');
-      rightValue = array[plusPosition+1];
-      leftValue = array[plusPosition-1];
-      var newVal = parseInt(leftValue)+parseInt(rightValue);
-      console.log(newVal);
-      array.splice(plusPosition-1, 3, newVal);
-      //console.log(array);
+    return total;
+  }, []);
+
+  function simplifying(array){
+
+    function operationCalc(operator, values){
+      switch (operator) {
+        case '*':
+          return values[0]*values[1];
+          break;
+        case '/':
+          return values[0]/values[1];
+          break;
+        case '+':
+          return values[0]+values[1];
+          break;
+        case '-':
+          return values[0]-values[1];
+          break;
+        default:
+
+      }
     }
-  });
-  */
-  var operations = ['*', '/', '+', '-'];
 
-  function operationCalc(operator, values){
-    switch (operator) {
-      case '*':
-        return values[0]*values[1];
-        break;
-      case '/':
-        return values[0]/values[1];
-        break;
-      case '+':
-        return values[0]+values[1];
-        break;
-      case '-':
-        return values[0]-values[1];
-        break;
-      default:
-
+    function simplify (array, operator){
+      var operatorPosition = array.indexOf(operator);
+      rightValue = array[operatorPosition+1];
+      leftValue = array[operatorPosition-1];
+      var newVal = operationCalc(operator, [parseInt(leftValue),parseInt(rightValue)]);
+      array.splice(operatorPosition-1, 3, newVal);
     }
-  }
-  if(array.indexOf('+') != -1){
-    plusPosition = array.indexOf('+');
-    rightValue = array[plusPosition+1];
-    leftValue = array[plusPosition-1];
-    var newVal = operationCalc('+', [parseInt(leftValue),parseInt(rightValue)]);
-    console.log(newVal);
-    array.splice(plusPosition-1, 3, newVal);
-    console.log(array);
-  }
-  if(array.indexOf('+') != -1){
-    // If the same operation must be performed again, we use a recursive function
-    simplifying(array);
-  }
-  operations.forEach((currOperation) => {
-    console.log(currOperation);
-  });
 
+    if (array.indexOf('*') != -1 || array.indexOf('/') != -1) {
+      if (array.indexOf('*') != -1) {
+        operator = '*';
+        simplify(array, operator);
+      } else if (array.indexOf('/') != -1) {
+        operator = '/';
+        simplify(array, operator);
+      }
+    }
+    if (array.indexOf('*') != -1 || array.indexOf('/') != -1) {
+      simplifying(array);
+    } else {
+      if (array.indexOf('+') != -1 || array.indexOf('-') != -1) {
+        plusPos = array.indexOf('+');
+        withdrawPos = array.indexOf('-');
+        if((plusPos < withdrawPos && plusPos > -1) || withdrawPos === -1){
+          operator = '+';
+        } else {
+          operator = '-';
+        }
+        simplify(array, operator);
+      }
+      if (array.indexOf('+') != -1 || array.indexOf('-') != -1) {
+        simplifying(array);
+      }
+    }
+    return array.toString();
+  }
+
+  return simplifying(operators);
 }
-simplifying(operators);
-//console.log(operators);
+
+
+document.getElementById('resultBoxExercise5').innerHTML = calc(operation);
