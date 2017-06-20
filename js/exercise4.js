@@ -1,5 +1,3 @@
-
-
 stringOne = document.getElementById('exercise4String1');
 stringTwo = document.getElementById('exercise4String2');
 resultBoxExercise4 = document.getElementById('resultExercise4');
