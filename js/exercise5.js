@@ -13,7 +13,7 @@ var calc = function(operation) {
   var operators = operation.split("").reduce((total, current) => { //I separate the string in each character and analize it
     // What I am basically doing here is creating an array with full numeric values
     // for each item p.e. 492
-    // and the sign characters in another item
+    // and the sign characters in another array item
     if(!isNaN(current)){
       var previous = total.pop();
       if (previous){
@@ -92,6 +92,7 @@ var calc = function(operation) {
       }
     }
     // If the operaton cannot be completed I return a warning message instead
+    // I use a ternary operator for this, pretty cute >:D
     return !isNaN(array.toString()) ? array.toString() : "Missing parameters";
   }
   // returning the final result

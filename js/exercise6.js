@@ -38,7 +38,7 @@ var ExerciseSix = function() {
 
   // Private methods
   var _parseDate = function(dateString) {
-    console.log(dateString);
+    //console.log(dateString);
     var dateArray = dateString.split(/\D+/);
     return new Date(dateArray[0], --dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5]||0, dateArray[6]||0);
   }
