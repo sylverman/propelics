@@ -38,7 +38,7 @@ exerciseTwo = (function(){
             currentChar = chr; //the previous character is now the current character
         }
       }
-      resultValue = newString;
+      resultValue = (str.length <= newString.length) ? str : newString;
       printResult(); //This is just for UI purposes
   }
 
