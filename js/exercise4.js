@@ -10,8 +10,8 @@ stringTwo.onkeyup = function(){
 }
 
 function findingMatches(stringOne, stringTwo){
-  var matchedCharacters = stringOne.split("").filter((val, index, arr) => { //ECMA6 Arrow functions
-    if(val != " " && stringTwo.indexOf(val) != -1){
+  var matchedCharacters = stringOne.toLowerCase().split("").filter((val, index, arr) => { //ECMA6 Arrow functions
+    if(val != " " && stringTwo.toLowerCase().indexOf(val) != -1){
       return arr.indexOf(val, index+1) < 0
     }
   });

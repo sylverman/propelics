@@ -1,9 +1,19 @@
+// Procedural programming (Not so elegant honestly)
+
+// Initial value for the operation
 operation = "512/2+43-9+1*2+100*2";
+
+//Picking the UI elements
 document.getElementById('operationExercise5').value = operation;
 operationExercise5 = document.getElementById('operationExercise5');
 
+
 var calc = function(operation) {
-  var operators = operation.split("").reduce((total, current) => {
+  // Functional programming, using reduce instead of a for loop (most efficient in memory)
+  var operators = operation.split("").reduce((total, current) => { //I separate the string in each character and analize it
+    // What I am basically doing here is creating an array with full numeric values
+    // for each item p.e. 492
+    // and the sign characters in another item
     if(!isNaN(current)){
       var previous = total.pop();
       if (previous){
@@ -20,8 +30,8 @@ var calc = function(operation) {
       total.push(current);
     }
 
-    return total;
-  }, []);
+    return total; // This line is very important to deal with arrays using reduce()
+  }, []); // I set the initial value as an array
 
   function simplifying(array){
 
@@ -44,10 +54,11 @@ var calc = function(operation) {
       }
     }
 
+    // Performing math operators dinamically
     function simplify (array, operator){
       var operatorPosition = array.indexOf(operator);
-      rightValue = array[operatorPosition+1];
-      leftValue = array[operatorPosition-1];
+      var rightValue = array[operatorPosition+1];
+      var leftValue = array[operatorPosition-1];
       var newVal = operationCalc(operator, [parseInt(leftValue),parseInt(rightValue)]);
       array.splice(operatorPosition-1, 3, newVal);
     }
@@ -62,6 +73,8 @@ var calc = function(operation) {
       }
     }
     if (array.indexOf('*') != -1 || array.indexOf('/') != -1) {
+      // Recursive function it is calling itself as many times as needed
+      // We avoid innecesary loops in this way
       simplifying(array);
     } else {
       if (array.indexOf('+') != -1 || array.indexOf('-') != -1) {
@@ -78,11 +91,12 @@ var calc = function(operation) {
         simplifying(array);
       }
     }
-    return array.toString();
+    // If the operaton cannot be completed I return a warning message instead
+    return !isNaN(array.toString()) ? array.toString() : "Missing parameters";
   }
-
+  // returning the final result
   return simplifying(operators);
 }
 
-
+// Just setting the initial result for the initial value
 document.getElementById('resultBoxExercise5').innerHTML = calc(operation);
